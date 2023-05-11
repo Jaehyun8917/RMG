@@ -48,7 +48,7 @@ void init();
 int intro_game();
 int intro_menu();
 void show_info();
-void outro();
+void outro(double pst);
 void Make_Map();
 void Visit_Room(int x, int y);
 void RemoveCursor();
@@ -70,6 +70,9 @@ void gotoxy(int x, int y)
 int main()
 {
 	while (1) {
+		clock_t start, end;
+		double pst;
+		start = clock();
 		init();
 		int key = intro_game();
 		if (key == 2) {
@@ -82,7 +85,9 @@ int main()
 		RemoveCursor();
 		Make_Map();
 		Player();
-		outro();
+		end = clock();
+		pst = (double)(end - start) / CLK_TCK;
+		outro(pst);
 	}
 
 	return 0;
@@ -115,7 +120,6 @@ int intro_game()
 	printf("                   ##      ##  ########  ##  ##  ## ##        \n");
 	printf("                    ######### ##      ## ##      ## ##########\n\n");
 	FontColor(WHITE);
-	printf("                                                                     v1.0.1-beta");
 
 	int menu_key = intro_menu();
 	return menu_key;
@@ -168,15 +172,34 @@ int intro_menu()
 	}
 }
 
-void show_info() 
+void show_info()
 {
 	system("cls");
+	FontColor(SKYBLUE);
+	gotoxy(0, 2);
+	printf("게임 정보\n");
+	FontColor(WHITE);
+	gotoxy(0, 3);
 	printf("게임 정보입니다.\n");
-	printf("아무키나 누르면 돌아갑니다.");
-	_getch();
+	printf("랜덤 미로 찾기 게임은 랜덤하게 생성되는 미로를 탈출하는 게임입니다.\n");
+	printf("화면 왼쪽 위에 보이는 '");
+	FontColor(SKYBLUE);
+	printf("●");
+	FontColor(WHITE);
+	printf("'을 움직여 오른쪽 아래에 위치한 '");
+	FontColor(YELLOW);
+	printf("★");
+	FontColor(WHITE);
+	printf("'에 도달하면 됩니다.\n\n");
+	printf("게임 플레이 방법\n");
+	printf("←, →, ↑, ↓ 방향키를 이용해 움직일 수 있습니다.\n\n");
+	printf("원작자 : boulce\n");
+	printf("원본 코드 : https://github.com/boulce/maze_c/blob/master/maze_v2.c\n\n");
+	printf("                                           아무키나 누르면 돌아갑니다.");
+	getch();
 }
 
-void outro()
+void outro(double pst)
 {
 	system("cls");
 	FontColor(PURPLE);
@@ -187,8 +210,9 @@ void outro()
 	printf("           ##         ##         ##          ########  ##     ##    \n");
 	printf("           ######### ########## ########## ##      ## ##      ## ##\n\n");
 	FontColor(WHITE);
+	printf("소요시간 : %.2f초\n", pst);
 	printf("                                                    아무키나 누르면 돌아갑니다...");
-	_getch();
+	getch();
 }
 
 void Visit_Room(int x, int y)
