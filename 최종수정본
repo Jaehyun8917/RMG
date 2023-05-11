@@ -72,7 +72,6 @@ int main()
 	while (1) {
 		clock_t start, end;
 		double pst;
-		start = clock();
 		init();
 		int key = intro_game();
 		if (key == 2) {
@@ -82,6 +81,7 @@ int main()
 			show_info();
 			continue;
 		}
+		start = clock();
 		RemoveCursor();
 		Make_Map();
 		Player();
@@ -96,6 +96,9 @@ int main()
 void init()
 {
 	system("mode con cols=82lines=42 | title 랜덤 미로 찾기 게임");
+	room[LENGTH][LENGTH] = { {FALSE}, };
+	bgrd[2 * LENGTH + 1][2 * LENGTH + 1] = { {FALSE, FALSE}, };
+	path[LENGTH * LENGTH] = { {0, 0}, };
 }
 
 int intro_game()
@@ -195,7 +198,7 @@ void show_info()
 	printf("←, →, ↑, ↓ 방향키를 이용해 움직일 수 있습니다.\n\n");
 	printf("원작자 : boulce\n");
 	printf("원본 코드 : https://github.com/boulce/maze_c/blob/master/maze_v2.c\n\n");
-	printf("                                           아무키나 누르면 돌아갑니다.");
+	printf("                                                    아무키나 누르면 돌아갑니다...");
 	getch();
 }
 
@@ -309,6 +312,7 @@ void Make_Map()
 		}
 	}
 }
+
 void RemoveCursor() //커서깜빡이 제거
 {
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
